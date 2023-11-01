@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -7,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ['var(--font-inter)', ...fontFamily.sans], // áp dụng font inter vừa tạo cho tailwind
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -15,4 +20,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
