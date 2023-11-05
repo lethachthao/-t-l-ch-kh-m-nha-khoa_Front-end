@@ -1,43 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons'; //icon
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Logo from '@/assets/images/tooth-logo.jpg';
 import Image from 'next/image';
 import HeaderAdmin from './_components/header';
 import Link from 'next/link';
+import { menuRoutes } from './_configs/menu-routes';
 
 const { Header, Content, Footer, Sider } = Layout;
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label: <Link href={`/admin/${key}`}>{label}</Link>,
-    //em tuong laf to thay href, trong nextjs cai Link component cua no la href chu ko phai `to` nhu ben react router dom nha em, vang a
-  };
-}
-
-const items = [
-  getItem('Quản lí bệnh nhân', 'user-manager', <PieChartOutlined />),
-  getItem('Quản lí bác sĩ', 'doctor-manager', <DesktopOutlined />),
-  getItem('Quản lí chuyên khoa', 'medical-specialty', <UserOutlined />, [
-    getItem('Cơ xương khớp', '3'),
-    getItem('Thần kinh', '4'),
-    getItem('Tiêu hóa', '5'),
-    getItem('Tim mạch', '5'),
-  ]),
-  getItem('Quản lí thời gian hẹn', 'works-manager', <TeamOutlined />),
-  getItem('Lịch sử khám bệnh', 'history-manager', <FileOutlined />),
-];
 
 const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -62,7 +33,7 @@ const AdminLayout = ({ children }) => {
           theme="light"
           defaultSelectedKeys={['1']}
           mode="inline"
-          items={items}
+          items={menuRoutes}
         />
       </Sider>
       <Layout>

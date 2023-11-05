@@ -1,7 +1,17 @@
 {
   "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "jsx": "preserve",
+    // "checkJs": true,
+    "lib": ["esnext", "dom"],
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./*"]
     }
-  }
+  },
+  "include": ["."],
+  "exclude": ["node_modules"]
 }

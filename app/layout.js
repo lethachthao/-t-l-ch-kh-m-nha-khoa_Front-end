@@ -3,6 +3,7 @@ import { cn } from '@/utils/cn';
 import '../styles/globals.css';
 import { fontInter } from '../lib/font';
 import RootProvider from '@/components/provider/root-provider';
+import { App } from 'antd';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,9 +33,11 @@ export default function RootLayout({ children }) {
         )}
       >
         <RootProvider>
-          <main className="relative" role="main">
-            {children}
-          </main>
+          <App>
+            <main className="relative" role="main">
+              {children}
+            </main>
+          </App>
         </RootProvider>
       </body>
     </html>
