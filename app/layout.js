@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
   // chúng ta sẽ bọc cái provider vừa tạo vào layout để áp dụng cho toàn bộ cac page, layout trong nextjs
 
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <body
         className={cn(
           fontInter.variable,

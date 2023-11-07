@@ -1,24 +1,91 @@
 'use client';
 
-import ScheduleForm from './_components/form/schedule-form';
+import { Button, Skeleton } from 'antd';
+import { FileAddOutlined } from '@ant-design/icons';
+
+import ScheduleModal from './_components/modal/schedule';
+import ScheduleList from './_components/schedule-list';
 import { useAddSchedule } from './_hooks/use-add-schedule';
 import { useDoctors } from './_hooks/use-doctors';
+import { useSchedules } from './_hooks/use-schedules';
+import { useToggle } from '@/hooks/use-toggle';
+import { useState } from 'react';
+import { useUpdateSchedule } from './_hooks/use-update-schedule';
 
 const ScheduleManager = () => {
-  const { data: doctors } = useDoctors();
-  const { mutate: addSchedule } = useAddSchedule();
+  const { data: schedules, isPending: isSchedulesPending } = useSchedules();
+  const { data: doctorsSeed, isPending: isDoctorsSeedPending } = useDoctors();
+  const { mutate: addSchedule, isPending: isSubmitting } = useAddSchedule();
+  const { mutate: updateSchedule } = useUpdateSchedule();
 
-  const addScheduleHandler = (data) => {
-    addSchedule(data);
+  const {
+    toggleState: isOpenScheduleModal,
+    on: openScheduleModal,
+    off: cancelScheduleModal,
+  } = useToggle(false);
+
+  const [editData, setEditData] = useState(null);
+
+  const addScheduleHandler = (data, id, isUpdateMode) => {
+    if (!isUpdateMode) {
+      addSchedule(data, {
+        onSuccess: cancelScheduleModal,
+      });
+      return;
+    }
+
+    updateSchedule(
+      { id, data },
+      {
+        onSuccess: () => {
+          cancelScheduleModal();
+        },
+      },
+    );
   };
 
+  const updateScheduleHandler = (data) => {
+    openScheduleModal();
+    setEditData(data);
+  };
+
+  if (isSchedulesPending) {
+    return <Skeleton />;
+  }
+
   return (
-    <div className="w-[800px] mx-auto bg-white rounded-lg shadow p-4">
-      <ScheduleForm doctors={doctors?.data} onSubmit={addScheduleHandler} />
+    <div>
+      <div className="mb-8">
+        <Button
+          type="primary"
+          icon={<FileAddOutlined />}
+          onClick={openScheduleModal}
+        >
+          Thêm lịch trình
+        </Button>
+      </div>
+
+      <ScheduleList
+        schedules={schedules.data}
+        onUpdate={updateScheduleHandler}
+      />
+      <ScheduleModal
+        isOpen={isOpenScheduleModal}
+        isSubmitting={isSubmitting}
+        schedulesSeed={schedules?.data}
+        doctorsSeed={doctorsSeed?.data}
+        defaultData={editData}
+        onSubmit={addScheduleHandler}
+        onCancel={() => {
+          if (editData) {
+            setEditData(null);
+          }
+
+          cancelScheduleModal();
+        }}
+      />
     </div>
   );
 };
 
 export default ScheduleManager;
-
-// còn 1 số cái cân phân tích
