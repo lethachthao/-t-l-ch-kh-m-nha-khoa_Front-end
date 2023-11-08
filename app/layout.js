@@ -4,6 +4,8 @@ import '../styles/globals.css';
 import { fontInter } from '../lib/font';
 import RootProvider from '@/components/provider/root-provider';
 import { App } from 'antd';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,11 +35,7 @@ export default function RootLayout({ children }) {
         )}
       >
         <RootProvider>
-          <App>
-            <main className="relative" role="main">
-              {children}
-            </main>
-          </App>
+          <App>{children}</App>
         </RootProvider>
       </body>
     </html>

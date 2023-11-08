@@ -31,7 +31,6 @@ const ScheduleForm = ({
   schedulesSeed,
   defaultData,
   onSubmit,
-  onUpdate,
 }) => {
   const {
     doctor: defaultDoctor,
@@ -74,6 +73,11 @@ const ScheduleForm = ({
   const submitHandler = (values) => {
     values.time = values.time.map((v) => JSON.parse(v));
     onSubmit?.(values, defaultData?._id, isEditMode);
+  };
+
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf('day');
   };
 
   return (
@@ -128,7 +132,7 @@ const ScheduleForm = ({
                 },
               ]}
             >
-              <DatePicker picker="date" />
+              <DatePicker picker="date" disabledDate={disabledDate} />
             </Form.Item>
           </Col>
         </Row>

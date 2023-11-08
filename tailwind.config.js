@@ -8,6 +8,10 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+    },
     extend: {
       fontFamily: {
         inter: ['var(--font-inter)', ...fontFamily.sans], // áp dụng font inter vừa tạo cho tailwind
