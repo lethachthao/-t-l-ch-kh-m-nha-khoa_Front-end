@@ -1,0 +1,212 @@
+'use client';
+
+import { Avatar, Button, Select, Skeleton, Space, Typography } from 'antd';
+import { useParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+import { BsCalendar3 } from 'react-icons/bs';
+import { CiBadgeDollar } from 'react-icons/ci';
+import { MdOutlineAlternateEmail } from 'react-icons/md';
+import { IoShareSocialOutline } from 'react-icons/io5';
+import { BsFacebook } from 'react-icons/bs';
+import { SiZalo } from 'react-icons/si';
+import moment from 'moment';
+import 'moment/locale/vi.js';
+import { useDoctorDetail } from './_hooks/use-doctor-detail';
+import { useDoctorSchedule } from './_hooks/use-doctor-schedule';
+import BookingModal from './_components/booking-modal';
+import { useBooking } from './_hooks/use-booking';
+
+moment.locale('vi');
+
+const { Title, Paragraph } = Typography;
+
+const DoctorDetail = () => {
+  const { id } = useParams();
+
+  const { data: doctor, isLoading: isDoctorDetailLoading } =
+    useDoctorDetail(id);
+
+  const [date, setDate] = useState('');
+  const [bookingData, setBookingData] = useState(null);
+
+  const { data: schedule, isLoading: isScheduleLoading } = useDoctorSchedule(
+    id,
+    date,
+  );
+
+  const { mutate: booking, isPending: isBookingSubmitting } = useBooking();
+
+  const generateNextWeek = useMemo(() => {
+    const days = [...Array(7)]
+      .map((_, i) => i + 1)
+      .map((day) => ({
+        label: moment().add(day, 'd').locale('vi').format('dddd, DD/MM/YYYY'),
+        value: moment().add(day, 'd').format('YYYY/MM/DD'),
+      }));
+
+    return days;
+  }, []);
+
+  useEffect(() => {
+    setDate(generateNextWeek[0].value);
+  }, [generateNextWeek]);
+
+  const changeDateHandler = (value) => {
+    setDate(value);
+  };
+
+  const bookingHandler = (date, startTime, endTime) => {
+    return () => {
+      setBookingData({
+        date,
+        startTime,
+        endTime,
+        doctor: doctor.data,
+      });
+    };
+  };
+
+  const bookingSubmitHandler = (values) => {
+    booking(values, {
+      onSuccess: () => {
+        setBookingData(null);
+      },
+    });
+  };
+
+  if (isDoctorDetailLoading) {
+    return <Skeleton />;
+  }
+
+  return (
+    <>
+      <div className="container flex gap-8">
+        <div className="flex flex-row gap-6 w-1/2 p-4">
+          <div>
+            <Avatar
+              src="https://i.pinimg.com/736x/f0/44/a6/f044a6812c8d9d09761d9dc7f6116ced.jpg"
+              size={120}
+            />
+          </div>
+
+          <Space size={3} direction="vertical">
+            <Title level={3}>Bác sĩ {doctor.data.name}</Title>
+            <div className="mb-2 text-sm text-gray-500">
+              <span className="font-semibold">Đã tham gia:</span>{' '}
+              <span>{moment(doctor.data.createdAt).fromNow()}</span>
+            </div>
+            <Paragraph>
+              Hơn 10 năm cống hiến trong lĩnh vực răng sứ thẩm mỹ Từ tu nghiệp,
+              học tập chuyên sâu về lĩnh vực phục hình tại Cuba Từng công tác
+              tại Bệnh viện răng hàm mặt
+            </Paragraph>
+
+            <div className="flex gap-1">
+              <span className="flex items-center gap-1">
+                <MdOutlineAlternateEmail /> Hộp thư:
+              </span>
+              <span>
+                <a href="mailto:mixigaming@gmail.com">{doctor.data.email}</a>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="flex items-center gap-1">
+                <IoShareSocialOutline /> Liên kết xã hội:
+              </span>
+              <Space size={5}>
+                <Button
+                  type="link"
+                  href="https://facebook.com"
+                  shape="circle"
+                  ghost
+                  icon={<BsFacebook />}
+                />
+                <Button
+                  type="link"
+                  href="https://zalo.me"
+                  shape="circle"
+                  ghost
+                  icon={<SiZalo />}
+                />
+              </Space>
+            </div>
+          </Space>
+        </div>
+
+        <div className="w-1/2 p-4">
+          <div>
+            <div>
+              <span className="font-bold text-gray-600">Địa chỉ khám: </span>
+            </div>
+            <div>
+              <address>{doctor.data.address}</address>
+            </div>
+          </div>
+
+          <div className="flex gap-2 flex-col mt-6">
+            <div className="flex items-center gap-1">
+              <span>
+                <BsCalendar3 />
+              </span>
+              <span>Lịch khám</span>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <Select
+                defaultValue={generateNextWeek[0].value}
+                className="w-[200px]"
+                onChange={changeDateHandler}
+                options={generateNextWeek}
+              />
+
+              {isScheduleLoading ? (
+                <Skeleton />
+              ) : (
+                <Space size={10} wrap>
+                  {schedule?.data ? (
+                    schedule.data.time.map((time) => (
+                      <Button
+                        key={time._id}
+                        type="primary"
+                        ghost
+                        onClick={bookingHandler(
+                          schedule.data.date,
+                          time.start,
+                          time.end,
+                        )}
+                      >
+                        {time.start} - {time.end}
+                      </Button>
+                    ))
+                  ) : (
+                    <span>Chưa có lịch vào ngày này</span>
+                  )}
+                </Space>
+              )}
+
+              <div className="flex items-center gap-1 text-amber-500">
+                <span>
+                  <CiBadgeDollar />
+                </span>
+                <span className="text-sm  italic">
+                  Chọn và đặt lịch miễn phí
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <BookingModal
+        isOpen={Boolean(bookingData)}
+        isSubmitting={isBookingSubmitting}
+        booking={bookingData}
+        onSubmit={bookingSubmitHandler}
+        onCancel={() => setBookingData(null)}
+      />
+    </>
+  );
+};
+
+export default DoctorDetail;

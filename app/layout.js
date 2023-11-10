@@ -4,6 +4,7 @@ import '../styles/globals.css';
 import { fontInter } from '../lib/font';
 import RootProvider from '@/components/provider/root-provider';
 import { App } from 'antd';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -31,7 +32,7 @@ export default function RootLayout({ children }) {
       <body
         className={cn(
           fontInter.variable,
-          'overflow-x-hidden min-h-full text-base',
+          'overflow-x-hidden text-base bg-gray-100',
         )}
       >
         <RootProvider>

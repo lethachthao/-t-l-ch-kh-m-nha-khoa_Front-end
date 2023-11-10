@@ -3,12 +3,13 @@
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 
+//
 export default function HomeSection({ title, to, className, children }) {
   return (
-    <section className={cn('py-4', className)}>
+    <section className="mb-8">
       <div className="container max-w-5xl flex flex-col gap-2">
-        <div className="mb-4">
-          <h1 className="relative font-bold text-2xl text-center py-3 before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-0 before:mx-auto before:w-[120px] before:h-[3px] before:bg-teal-600">
+        <div className="py-8">
+          <h1 className="relative font-bold text-2xl text-center before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-[-10px] before:mx-auto before:w-[120px] before:h-[3px] before:bg-teal-600">
             {title}
           </h1>
         </div>

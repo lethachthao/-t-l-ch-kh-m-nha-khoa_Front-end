@@ -3,7 +3,7 @@
 import React from 'react';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, FloatButton } from 'antd';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // chúng ta cần một provider gốc trong đó chứa tất cả các provider cần thiết để bọc cái Nextjs App của chúng ta lại
@@ -47,12 +47,17 @@ const RootProvider = ({ children }) => {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: '#096DC7',
+            fontSize: 16,
+            colorPrimary: '#06b6d4',
+            colorLink: '#0891b2',
+            colorLinkHover: '#0e7490',
+            colorLinkActive: '#164e63',
           },
         }}
       >
         <QueryClientProvider client={queryClient}>
           {children}
+          <FloatButton.BackTop />
         </QueryClientProvider>
       </ConfigProvider>
     </StyleProvider>

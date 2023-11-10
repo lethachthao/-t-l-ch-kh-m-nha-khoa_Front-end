@@ -5,7 +5,7 @@ import { navRoute } from '../../_configs/nav-route';
 
 const Header = () => {
   return (
-    <header className="block sticky top-0 left-0 right-0 z-[9999] w-full shadow-md bg-white">
+    <header className="block sticky top-0 left-0 right-0 z-[999] w-full shadow-md bg-white">
       <nav className="container">
         <div className="flex items-center w-full h-[60px]">
           <Link

@@ -1,6 +1,6 @@
 'use client';
 
-import HomeSection from '../home-section';
+import HomeSection from '../../home-section';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
