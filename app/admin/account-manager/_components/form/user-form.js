@@ -137,6 +137,23 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
           </Form.Item>
 
           <Form.Item
+            name="role"
+            label="Vai trò"
+            rules={[
+              {
+                required: true,
+                message: 'Please select role!',
+              },
+            ]}
+          >
+            <Radio.Group>
+              <Radio value="user">Bệnh nhân</Radio>
+              <Radio value="doctor">Bác sĩ</Radio>
+              <Radio value="admin">Quản trị viên</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
             name="password"
             label="Password"
             hidden={isEditMode}

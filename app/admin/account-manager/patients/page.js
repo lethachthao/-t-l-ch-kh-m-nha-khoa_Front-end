@@ -2,6 +2,7 @@
 import { Typography } from 'antd';
 import UserList from '../_components/user-list';
 import { useAccountType } from '../../_hooks/use-account-type';
+import withAuth from '@/hocs/withAuth';
 
 const { Title } = Typography;
 
@@ -22,4 +23,4 @@ const PatientManager = () => {
   );
 };
 
-export default PatientManager;
+export default withAuth({ role: ['admin'] })(PatientManager);

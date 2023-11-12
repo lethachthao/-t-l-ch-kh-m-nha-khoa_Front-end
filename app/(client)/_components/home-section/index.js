@@ -4,7 +4,14 @@ import { cn } from '@/utils/cn';
 import Link from 'next/link';
 
 //
-export default function HomeSection({ title, to, className, children }) {
+export default function HomeSection({
+  title,
+  to,
+  isLoading = false,
+  loader,
+  className,
+  children,
+}) {
   return (
     <section className="mb-8">
       <div className="container max-w-5xl flex flex-col gap-2">
@@ -13,7 +20,8 @@ export default function HomeSection({ title, to, className, children }) {
             {title}
           </h1>
         </div>
-        <div>{children}</div>
+
+        {isLoading ? loader : <div>{children}</div>}
 
         <div className="text-center">
           <Link

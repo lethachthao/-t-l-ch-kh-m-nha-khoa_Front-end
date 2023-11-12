@@ -1,17 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import React, { useMemo, useState } from 'react';
+import { Layout, Menu } from 'antd';
 import Logo from '@/assets/images/tooth-logo.jpg';
 import Image from 'next/image';
 import HeaderAdmin from './_components/header';
-import Link from 'next/link';
 import { menuRoutes } from './_configs/menu-routes';
+import withAuth from '@/hocs/withAuth';
+import { useAuth } from '@/hooks/use-auth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const AdminLayout = ({ children }) => {
+  const { data: profile } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+
+  const menuRoutesFilter = useMemo(() => {
+    return menuRoutes.filter((route) =>
+      route.roleAccess.includes(profile?.data?.role),
+    );
+  }, [profile]);
 
   return (
     <main className="relative" role="main">
@@ -40,7 +48,7 @@ const AdminLayout = ({ children }) => {
             theme="light"
             defaultSelectedKeys={['1']}
             mode="inline"
-            items={menuRoutes}
+            items={menuRoutesFilter}
           />
         </Sider>
         <Layout>
@@ -59,4 +67,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default AdminLayout;
+export default withAuth()(AdminLayout);

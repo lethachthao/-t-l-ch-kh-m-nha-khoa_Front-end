@@ -1,14 +1,25 @@
+import { useAuth } from '@/hooks/use-auth';
 import { Avatar, Dropdown } from 'antd';
-
-const items = [
-  {
-    label: 'Đăng xuất',
-    danger: true,
-    key: '0',
-  },
-];
+import { useRouter } from 'next/navigation';
 
 const HeaderAdmin = () => {
+  const { data: profile, isLoading } = useAuth();
+  const router = useRouter();
+
+  const logoutHandler = () => {
+    localStorage.removeItem('accessToken');
+    router.replace('/login');
+  };
+
+  const items = [
+    {
+      label: 'Đăng xuất',
+      danger: true,
+      key: '0',
+      onClick: logoutHandler,
+    },
+  ];
+
   return (
     <div className="px-6 flex justify-between items-center">
       <div>Hôm nay là {new Date().toLocaleDateString()}!</div>
@@ -29,7 +40,7 @@ const HeaderAdmin = () => {
           </Avatar>
         </Dropdown>
 
-        <span className="font-bold">Xin chào Admin!</span>
+        <span className="font-bold">Xin chào {profile?.data?.name}!</span>
       </div>
     </div>
   );

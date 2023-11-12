@@ -11,6 +11,7 @@ import { useSchedules } from './_hooks/use-schedules';
 import { useToggle } from '@/hooks/use-toggle';
 import { useState } from 'react';
 import { useUpdateSchedule } from './_hooks/use-update-schedule';
+import withAuth from '@/hocs/withAuth';
 
 const ScheduleManager = () => {
   const { data: schedules, isPending: isSchedulesPending } = useSchedules();
@@ -88,4 +89,4 @@ const ScheduleManager = () => {
   );
 };
 
-export default ScheduleManager;
+export default withAuth({ role: ['admin'] })(ScheduleManager);

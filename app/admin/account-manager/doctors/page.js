@@ -3,6 +3,7 @@
 import UserList from '../_components/user-list';
 import { Typography } from 'antd';
 import { useAccountType } from '../../_hooks/use-account-type';
+import withAuth from '@/hocs/withAuth';
 
 const { Title } = Typography;
 
@@ -23,4 +24,4 @@ const DoctorManager = () => {
   );
 };
 
-export default DoctorManager;
+export default withAuth({ role: ['admin'] })(DoctorManager);

@@ -3,7 +3,7 @@ import { axiosInstance } from '@/lib/http/axios-instance';
 export const addAccount = (data) => {
   // đối số đầu tiên là user, do chúng ta config base url bên trong axios instance rồi cho nên chúng ta chỉ cần để '/user' là nó sẽ tự động chuyển thành url như này http://localohst:3001/api/user
   // thứ 2 là đối số data, cái đó là data nhận từ form đăng kí
-  return axiosInstance.post('/user', data);
+  return axiosInstance.post('/auth/signup', data);
 };
 
 export const getAccountType = (type) => {

@@ -2,6 +2,7 @@
 
 import AddUserForm from '../_components/form/user-form';
 import { useAddAccount } from '../../_hooks/use-add-account';
+import withAuth from '@/hocs/withAuth';
 
 const AddAccount = () => {
   const { mutate } = useAddAccount();
@@ -15,4 +16,4 @@ const AddAccount = () => {
   return <AddUserForm onSubmit={addUserHandler} />;
 };
 
-export default AddAccount;
+export default withAuth({ role: ['admin'] })(AddAccount);
