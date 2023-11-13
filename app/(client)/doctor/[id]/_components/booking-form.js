@@ -19,7 +19,7 @@ export default function BookingForm({ isSubmitting, booking, onSubmit }) {
   )} / ${startTime} - ${endTime}`;
 
   const submitHandler = (values) => {
-    values.birthday = moment(values.birthday).format('DD/MM/YYYY');
+    values.birthday = values.birthday.format();
 
     onSubmit?.({ ...values, doctorId: doctor._id, date, startTime, endTime });
   };

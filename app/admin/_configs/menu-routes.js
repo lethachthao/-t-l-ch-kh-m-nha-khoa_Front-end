@@ -37,9 +37,9 @@ export const menuRoutes = [
     roleAccess: ['admin'],
   },
   {
-    key: 'patient-manager',
+    key: 'booking-manager',
     icon: <FaHospitalUser />,
-    label: <Link href="/admin/patient-manager">Quản lí bệnh nhân</Link>,
+    label: <Link href="/admin/booking-manager">Quản lí đơn khám</Link>,
     roleAccess: ['doctor'],
   },
   {
