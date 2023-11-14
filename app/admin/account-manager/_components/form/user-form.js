@@ -43,6 +43,10 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
     const formData = new FormData();
 
     for (let fieldName in values) {
+      if (!values[fieldName]) {
+        continue;
+      }
+
       if (fieldName === 'avatar') {
         const [file] = values[fieldName];
 
@@ -56,6 +60,8 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
 
       formData.append(fieldName, values[fieldName]);
     }
+
+    console.log(formData);
 
     onSubmit?.(formData, _id);
   };
@@ -206,7 +212,7 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
             ]}
           >
             <Radio.Group>
-              <Radio value="patient">Bệnh nhân</Radio>
+              <Radio value="user">Bệnh nhân</Radio>
               <Radio value="doctor">Bác sĩ</Radio>
               <Radio value="admin">Quản trị viên</Radio>
             </Radio.Group>

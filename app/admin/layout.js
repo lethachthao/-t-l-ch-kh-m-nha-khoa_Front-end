@@ -67,4 +67,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default withAuth()(AdminLayout);
+export default withAuth({ role: ['admin', 'doctor'] })(AdminLayout);

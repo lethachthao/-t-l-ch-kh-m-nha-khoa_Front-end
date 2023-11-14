@@ -10,9 +10,13 @@ import {
   Spin,
 } from 'antd';
 import moment from 'moment';
+import { useAuth } from '@/hooks/use-auth';
+import dayjs from 'dayjs';
 
 export default function BookingForm({ isSubmitting, booking, onSubmit }) {
   const { date, startTime, endTime, doctor } = booking;
+
+  const { data: profile } = useAuth();
 
   const dateNode = `${moment(date).format(
     'dddd, DD/MM/YYYY',
@@ -47,7 +51,19 @@ export default function BookingForm({ isSubmitting, booking, onSubmit }) {
       </div>
 
       <Spin spinning={isSubmitting}>
-        <Form name="booking" onFinish={submitHandler} layout="vertical">
+        <Form
+          name="booking"
+          onFinish={submitHandler}
+          layout="vertical"
+          initialValues={{
+            name: profile.data.name,
+            gender: profile.data.gender,
+            email: profile.data.email,
+            birthday: dayjs(profile.data.birthday),
+            phoneNumber: profile.data.phoneNumber,
+            address: profile.data.address,
+          }}
+        >
           <Form.Item
             name="name"
             label="Họ tên"

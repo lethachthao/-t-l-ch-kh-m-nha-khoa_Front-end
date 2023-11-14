@@ -14,8 +14,10 @@ export const useBooking = () => {
         'Đặt lịch khám thành công! Chúng tôi đã gửi đến email của bạn một liên kết xác nhận, vui lòng kiểm tra và xác nhận trong vòng 2 giờ.',
       );
     },
-    onError: () => {
-      message.error('Đặt lịch khám không thành công!');
+    onError: (err) => {
+      message.error(
+        err.response?.data?.message || 'Đặt lịch khám không thành công!',
+      );
     },
   });
 };

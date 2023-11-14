@@ -2,9 +2,22 @@
 
 import Typewriter from 'typewriter-effect';
 import { BsSearch } from 'react-icons/bs';
+import { useRouter } from 'next/navigation';
+
+const textIntro = 'Chào mừng bạn đến với phòng khám nha khoa iTooth!';
 
 const HeaderIntro = () => {
-  const textIntro = 'Chào mừng bạn đến với phòng khám nha khoa iTooth!';
+  const router = useRouter();
+
+  const searchHandler = (e) => {
+    const { keyCode, target } = e;
+
+    if (keyCode === 13) {
+      e.preventDefault();
+
+      router.push(`/search?q=${target.value}`);
+    }
+  };
 
   return (
     <section className="block bg-[url('/images/bg-cover.jpg')] bg-center bg-cover h-[400px] overflow-hidden relative">
@@ -27,12 +40,13 @@ const HeaderIntro = () => {
           </span>
           <input
             className=" border-none bg-transparent appearance-none w-[500px] focus:outline-none text-lg"
-            placeholder="Tìm chuyên khoa"
+            placeholder="Tìm chuyên khoa hoặc bác sĩ"
+            onKeyUp={searchHandler}
           />
         </div>
       </div>
     </section>
   );
 };
-
+// anh doi em ti
 export default HeaderIntro;

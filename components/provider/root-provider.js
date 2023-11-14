@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';
 import { ConfigProvider, FloatButton } from 'antd';
@@ -16,6 +16,7 @@ const RootProvider = ({ children }) => {
   // chúng ta dùng hook useMemo để ghi nhớ cái giá trị tính toán cho cache CSS được tạo ra từ thư viện ant design
   // để tránh mỗi lần component render là nó cũng sẽ tính toán lại và có thể tạo ra một tham chiếu mới
   const cache = React.useMemo(() => createCache(), []);
+  const isInsertCache = useRef(false);
 
   // for tanstack query config provider
   const [queryClient] = React.useState(
@@ -34,12 +35,17 @@ const RootProvider = ({ children }) => {
   );
 
   // đây là một hook của Next.js có nhiệm vụ là nó insert style css của thư viện antd vào HTML của chúng ta mỗi khi chúng ta chuyển trang
-  useServerInsertedHTML(() => (
-    <style
-      id="antd"
-      dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
-    />
-  ));
+  useServerInsertedHTML(() => {
+    if (isInsertCache.current) return;
+    isInsertCache.current = true;
+
+    return (
+      <style
+        id="antd"
+        dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
+      />
+    );
+  });
 
   // mình sẽ config thêm một số thứ về màu sắc cho dự án ha, em muốn màu chủ đạo tức là màu primary là màu gì? mau xanh nuoc bien anh oi
   return (

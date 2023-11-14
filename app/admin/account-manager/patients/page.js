@@ -7,7 +7,7 @@ import withAuth from '@/hocs/withAuth';
 const { Title } = Typography;
 
 const PatientManager = () => {
-  const { isPending, isLoading, data } = useAccountType('patient');
+  const { isPending, isLoading, data } = useAccountType('user');
 
   if (isPending || isLoading) {
     return <div>Loading...</div>;

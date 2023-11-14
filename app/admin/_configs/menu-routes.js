@@ -57,9 +57,11 @@ export const menuRoutes = [
     roleAccess: ['admin'],
   },
   {
-    key: 'history-manager',
+    key: 'medical-examination-history',
     icon: <FileOutlined />,
-    label: <Link href="/admin/history-manager">Quản lí lịch sử khám</Link>,
-    roleAccess: ['admin'],
+    label: (
+      <Link href="/admin/medical-examination-history">Lịch sử khám bệnh</Link>
+    ),
+    roleAccess: ['admin', 'doctor'],
   },
 ];

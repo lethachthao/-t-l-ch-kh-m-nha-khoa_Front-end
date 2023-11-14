@@ -21,7 +21,7 @@ const Login = () => {
       <div className="max-w-lg mx-auto p-4 mt-10 rounded-xl shadow bg-white">
         <div className="flex flex-col items-center">
           <Image src={Logo} alt="iTooth" width={100} height={100} />
-          <Title level={3}>Đăng nhập trang quản trị</Title>
+          <Title level={3}>Đăng nhập</Title>
         </div>
         <Form
           name="login"

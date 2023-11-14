@@ -15,10 +15,10 @@ export const useLogin = () => {
     onSuccess: async (response) => {
       localStorage.setItem('accessToken', response?.accessToken?.token);
 
-      // await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
 
       message.success('Đăng nhập thành công!');
-      router.push('/admin');
+      router.push('/');
     },
     onError: () => {
       message.error('Đăng nhập không thành công!');

@@ -1,6 +1,15 @@
 'use client';
 
-import { Avatar, Button, Select, Skeleton, Space, Tag, Typography } from 'antd';
+import {
+  App,
+  Avatar,
+  Button,
+  Select,
+  Skeleton,
+  Space,
+  Tag,
+  Typography,
+} from 'antd';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { BsCalendar3 } from 'react-icons/bs';
@@ -17,6 +26,7 @@ import { useDoctorSchedule } from './_hooks/use-doctor-schedule';
 import BookingModal from './_components/booking-modal';
 import { useBooking } from './_hooks/use-booking';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/use-auth';
 
 moment.locale('vi');
 
@@ -25,11 +35,13 @@ const { Title, Paragraph } = Typography;
 const DoctorDetail = () => {
   const { id } = useParams();
 
+  const { data: profile, isError } = useAuth();
   const { data: doctor, isLoading: isDoctorDetailLoading } =
     useDoctorDetail(id);
 
   const [date, setDate] = useState('');
   const [bookingData, setBookingData] = useState(null);
+  const { message } = App.useApp();
 
   const { data: schedule, isLoading: isScheduleLoading } = useDoctorSchedule(
     id,
@@ -59,6 +71,10 @@ const DoctorDetail = () => {
 
   const bookingHandler = (date, startTime, endTime) => {
     return () => {
+      if (!profile?.data || isError) {
+        return message.error('Vui lòng đăng nhập để tiếp tục!');
+      }
+
       setBookingData({
         date,
         startTime,
