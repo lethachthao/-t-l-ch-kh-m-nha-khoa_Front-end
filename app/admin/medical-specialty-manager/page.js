@@ -6,7 +6,7 @@ import MedicalSpecialtyList from './_components/medical-specialty-list';
 import { useToggle } from '@/hooks/use-toggle';
 import MedicalSpecialtyModal from './_components/modal/medical-specialty';
 import { useAddMedicalSpecialty } from '../_hooks/use-add-medical-specialty';
-import { useMedicalSpecialty } from './_hooks/use-medical-specialty';
+import { useMedicalSpecialty } from '../../../hooks/use-medical-specialty';
 import withAuth from '@/hocs/withAuth';
 
 const MedicalSpecialty = () => {

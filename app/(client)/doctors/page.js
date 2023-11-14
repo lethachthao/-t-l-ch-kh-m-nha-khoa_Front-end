@@ -2,7 +2,7 @@
 
 import { Skeleton } from 'antd';
 import DoctorList from './_components/doctor-list';
-import DoctorsIntro from './_components/doctors-intro';
+import DetailIntro from '../_components/detail-intro';
 import { useDoctors } from './_hooks/use-doctors';
 
 const Doctors = () => {
@@ -14,9 +14,12 @@ const Doctors = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <DoctorsIntro />
+      <DetailIntro
+        title="Đội ngũ bác sĩ"
+        description="Physicians and surgeons diagnose and treat injuries or illnesses and address health maintenance. Physicians examine patients; take medical histories; prescribe medications; and order, perform, and interpret diagnostic tests. They often counsel patients on diet, hygiene, and preventive healthcare."
+      />
 
-      <div className="container">
+      <div className="container mb-8">
         <DoctorList doctors={doctors.data} />
       </div>
     </div>

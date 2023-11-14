@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, Button, Select, Skeleton, Space, Typography } from 'antd';
+import { Avatar, Button, Select, Skeleton, Space, Tag, Typography } from 'antd';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { BsCalendar3 } from 'react-icons/bs';
@@ -9,12 +9,14 @@ import { MdOutlineAlternateEmail } from 'react-icons/md';
 import { IoShareSocialOutline } from 'react-icons/io5';
 import { BsFacebook } from 'react-icons/bs';
 import { SiZalo } from 'react-icons/si';
+import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import moment from 'moment';
 import 'moment/locale/vi.js';
 import { useDoctorDetail } from './_hooks/use-doctor-detail';
 import { useDoctorSchedule } from './_hooks/use-doctor-schedule';
 import BookingModal from './_components/booking-modal';
 import { useBooking } from './_hooks/use-booking';
+import Link from 'next/link';
 
 moment.locale('vi');
 
@@ -83,23 +85,40 @@ const DoctorDetail = () => {
       <div className="container flex gap-8">
         <div className="flex flex-row gap-6 w-1/2 p-4">
           <div>
-            <Avatar
-              src="https://i.pinimg.com/736x/f0/44/a6/f044a6812c8d9d09761d9dc7f6116ced.jpg"
-              size={120}
-            />
+            <Avatar src={doctor.data.avatar.path} size={120} />
           </div>
 
           <Space size={3} direction="vertical">
             <Title level={3}>Bác sĩ {doctor.data.name}</Title>
+
+            {!!doctor.data.specialist.length && (
+              <Space size={10}>
+                {doctor.data.specialist.map((item) => (
+                  <Link
+                    href={`/specialist/${item._id}`}
+                    className="font-semibold flex items-center gap-1.5"
+                    key={item._id}
+                  >
+                    <Avatar
+                      src={item.avatar.path}
+                      size={20}
+                      className="inline-block"
+                    />
+                    <span>{item.name}</span>
+
+                    <span>
+                      <RiVerifiedBadgeFill className="text-cyan-600" />
+                    </span>
+                  </Link>
+                ))}
+              </Space>
+            )}
+
             <div className="mb-2 text-sm text-gray-500">
               <span className="font-semibold">Đã tham gia:</span>{' '}
               <span>{moment(doctor.data.createdAt).fromNow()}</span>
             </div>
-            <Paragraph>
-              Hơn 10 năm cống hiến trong lĩnh vực răng sứ thẩm mỹ Từ tu nghiệp,
-              học tập chuyên sâu về lĩnh vực phục hình tại Cuba Từng công tác
-              tại Bệnh viện răng hàm mặt
-            </Paragraph>
+            <Paragraph>{doctor.data.bio}</Paragraph>
 
             <div className="flex gap-1">
               <span className="flex items-center gap-1">

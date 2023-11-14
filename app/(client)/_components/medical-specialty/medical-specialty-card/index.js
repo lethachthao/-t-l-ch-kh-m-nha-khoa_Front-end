@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function MedicalSpecialtyCard({ id, name, imageUrl }) {
+export default function SpecialistCard({ id, name, imageUrl }) {
   return (
     <Link
-      href={`/chuyen-khoa/${id}`}
+      href={`/specialist/${id}`}
       className="flex flex-col text-center gap-2 transition-colors !text-slate-700 hover:!text-slate-500"
     >
       <div className="relative w-full h-[180px] rounded-lg overflow-hidden">

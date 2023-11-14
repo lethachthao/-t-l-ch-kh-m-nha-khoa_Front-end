@@ -1,31 +1,70 @@
 import React, { useMemo } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Button, Form, Input, Radio, Spin } from 'antd';
+import { LockOutlined, UserOutlined, UploadOutlined } from '@ant-design/icons';
+import { Alert, Avatar, Button, Form, Input, Radio, Spin, Upload } from 'antd';
+import {
+  useUploadManual,
+  normFile,
+} from '@/app/admin/_hooks/use-upload-manual';
+import { isArray, isFile } from '@/utils/assertions';
 
 const initialData = {
+  _id: null,
   name: '',
+  bio: '',
   email: '',
   phoneNumber: '',
   address: '',
   accountType: '',
+  role: '',
   password: '',
+  avatar: '',
 };
 
 const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
-  const { name, email, phoneNumber, address, accountType } =
-    defaultData || initialData;
+  const {
+    _id,
+    name,
+    bio,
+    email,
+    phoneNumber,
+    address,
+    accountType,
+    role,
+    avatar,
+  } = defaultData || initialData;
 
   const [form] = Form.useForm();
   const nameValue = Form.useWatch('name', form);
+  const { getUploadProps } = useUploadManual({
+    maxCount: 1,
+  });
 
   const onFinish = (values) => {
-    onSubmit?.({ ...defaultData, ...values });
+    const formData = new FormData();
+
+    for (let fieldName in values) {
+      if (fieldName === 'avatar') {
+        const [file] = values[fieldName];
+
+        if (file && isFile(file.originFileObj)) {
+          formData.append(fieldName, file.originFileObj);
+          continue;
+        } else {
+          continue;
+        }
+      }
+
+      formData.append(fieldName, values[fieldName]);
+    }
+
+    onSubmit?.(formData, _id);
   };
 
   const isEditMode = useMemo(() => Boolean(defaultData), [defaultData]);
   // khi bấm submit, thì ngay lập tức cái prop callback `onFinish` trong Form sẽ được gọi, anh pass vào đó
   // cái onSubmit tiếp tục, onSubmit ở UserForm là cái prop callback của chúng ta tự làm riêng mục đích là truyền lên trên theo dạng callback void
   // đó em qua bên page kia em thấy cái prop y hệt cái onSubmit bên đây truyền lên, tức là bên đây truyền lên qua prop nào là bên page kia chúng ta sẽ có prop y hệt như vậy
+  // em hông nói sớm giờ phải refactor lại tùm lum thứ, hôm đó em có bảo nhưng anh bảo mình cứ tính sau mà anh
   return (
     <div className="flex flex-col gap-4 bg-white p-8 rounded-xl">
       <Alert
@@ -48,10 +87,22 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
           form={form}
           initialValues={{
             name: name || '',
+            bio: bio || '',
             email: email || '',
             phoneNumber: phoneNumber || '',
             address: address || '',
             accountType: accountType || '',
+            role: role || '',
+            ...(avatar && {
+              avatar: [
+                {
+                  uid: avatar?._id,
+                  name: avatar?.filename,
+                  status: 'done',
+                  url: avatar?.path,
+                },
+              ],
+            }),
           }}
           onFinish={onFinish}
         >
@@ -69,6 +120,19 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Name"
             />
+          </Form.Item>
+
+          <Form.Item
+            name="bio"
+            label="Bio"
+            rules={[
+              {
+                required: true,
+                message: 'Please input bio!',
+              },
+            ]}
+          >
+            <Input.TextArea placeholder="Bio" />
           </Form.Item>
 
           <Form.Item
@@ -101,6 +165,18 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Phone Number"
             />
+          </Form.Item>
+
+          <Form.Item
+            name="avatar"
+            label="Avatar"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            extra="Upload tối đa 1 hình ảnh"
+          >
+            <Upload {...getUploadProps}>
+              <Button icon={<UploadOutlined />}>Upload avatar</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item

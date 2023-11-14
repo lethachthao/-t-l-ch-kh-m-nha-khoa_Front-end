@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Table } from 'antd';
+import { Avatar, Button, Table } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDeleteAccount } from '../../../_hooks/use-delete-account';
 import { useEditAccount } from '../../../_hooks/use-edit-account';
@@ -13,6 +13,18 @@ const UserList = ({ data }) => {
   const [editId, setEditId] = useState('');
 
   const columns = [
+    {
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (text, record) => {
+        return (
+          <Avatar src={record?.avatar?.path} size="small">
+            {record.name.slice(0, 1)}
+          </Avatar>
+        );
+      },
+    },
     {
       title: 'Name',
       dataIndex: 'name',
@@ -73,6 +85,7 @@ const UserList = ({ data }) => {
       name: account.name,
       age: 10,
       phoneNumber: account.phoneNumber,
+      avatar: account.avatar,
       email: account.email,
       address: account.address,
     }));
@@ -92,12 +105,15 @@ const UserList = ({ data }) => {
     };
   }
 
-  function editAccount(data) {
-    mutateEditAccount(data, {
-      onSuccess: () => {
-        setEditId('');
+  function editAccount(data, id) {
+    mutateEditAccount(
+      { data, id },
+      {
+        onSuccess: () => {
+          setEditId('');
+        },
       },
-    });
+    );
   }
 
   return (

@@ -27,8 +27,7 @@ const RootProvider = ({ children }) => {
             gcTime: 1000 * 60 * 5, // sẽ dọn dẹp cache nếu cache đó bị vô hiệu hóa (ví dụ cache ở trang A, nhưng user qua trang B và họ ở đó hơn 5 phút) thì cache ở trang A sẽ được dọn dẹp
             refetchOnWindowFocus: false, // không fetch lại data khi nhấn chuột vào bất cứ đâu trong trình duyệt
             refetchOnReconnect: false, // không fetch lại data khi mất kết nối và sau đó có kết nối lại internet
-            retryOnMount: false, // ko retry fetch lại data nếu query đó có error xảy ra
-            refetchInterval: false,
+            retryOnMount: true, // ko retry fetch lại data nếu query đó có error xảy ra
           },
         },
       }),

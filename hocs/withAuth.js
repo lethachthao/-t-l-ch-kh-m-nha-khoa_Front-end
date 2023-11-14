@@ -4,12 +4,15 @@ import { isArray } from '@/utils/assertions';
 import { Alert, Skeleton } from 'antd';
 import { notFound, redirect } from 'next/navigation';
 
-const withAuth =
-  (options = {}) =>
-  (Component) =>
-  (props) => {
+const withAuth = (options = {}) => {
+  return (Component) => (props) => {
+    const { data, isLoading, isError, error } = useAuth();
+
     const { role, mode } = options;
-    const { data, isLoading, isError } = useAuth();
+
+    console.log('with auth active');
+
+    console.log('error: ', error);
 
     if (isLoading) {
       return <Skeleton />;
@@ -27,5 +30,6 @@ const withAuth =
 
     return <Component {...props} />;
   };
+};
 
 export default withAuth;

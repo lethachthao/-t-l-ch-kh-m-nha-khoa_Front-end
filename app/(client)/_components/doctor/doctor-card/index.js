@@ -2,21 +2,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { cn } from '@/utils/cn';
+import { Avatar } from 'antd';
 
 const DoctorCard = ({ className, doctor }) => {
-  const { _id, name, description, address } = doctor;
+  const { _id, name, avatar, bio, address, specialist } = doctor;
 
   return (
     <Link
       href={`/doctor/${_id}`}
       className={cn(
-        'relative p-4 !bg-white flex flex-col justify-center items-center gap-2 transition-colors !text-slate-700 hover:!text-slate-500 oveflow-hidden',
+        'relative h-full p-4 !bg-white flex flex-col justify-center items-center gap-2 transition-colors !text-slate-700 hover:!text-slate-500 overflow-hidden',
         className,
       )}
     >
       <div className="relative w-[120px] h-[120px] rounded-full overflow-hidden">
         <Image
-          src="https://i.pinimg.com/736x/f0/44/a6/f044a6812c8d9d09761d9dc7f6116ced.jpg"
+          src={avatar.path}
           alt="Doctor Image"
           fill={false}
           width={0}
@@ -28,17 +29,21 @@ const DoctorCard = ({ className, doctor }) => {
 
       <h3 className="font-semibold text-lg">Bác sĩ {name}</h3>
 
-      <p className="text-slate-700">
-        Ai bị các vấn đề về răng cứ đến gặp tôi, tôi đấm cho gãy luôn. Đảm bảo
-        uy tín!
-      </p>
+      <p className="text-slate-700 line-clamp-3">{bio}</p>
 
-      <div className="flex items-center w-full gap-1 font-semibold text-sm text-left">
-        <span>
-          <HiOutlineLocationMarker />
-        </span>
-        <span>{address}</span>
-      </div>
+      {specialist && !!specialist.length && (
+        <div className="w-full gap-1 font-semibold text-sm text-left">
+          {specialist.map((item) => (
+            <div
+              className="inline-flex items-center justify-center gap-1.5 rounded-full border border-gray-200 p-1.5"
+              key={item._id}
+            >
+              <Avatar src={item.avatar.path} size={20} />
+              <span>{item.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </Link>
   );
 };

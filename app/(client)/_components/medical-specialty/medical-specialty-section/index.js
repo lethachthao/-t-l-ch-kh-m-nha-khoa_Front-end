@@ -16,7 +16,7 @@ export default function MedicalSpecialtySection({ specialist, isLoading }) {
       title="Chuyên khoa nổi bật"
       isLoading={isLoading}
       loader={<Skeleton.Image active />}
-      to="/chuyen-khoa"
+      to="/specialist"
     >
       {specialist && (
         <Swiper slidesPerView={4} spaceBetween={20}>

@@ -1,5 +1,12 @@
 import { useMemo, useState } from 'react';
 
+export const normFile = (e) => {
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};
+
 export const useUploadManual = ({ maxCount = 1 }) => {
   const [fileList, setFileList] = useState([]);
 

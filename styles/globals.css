@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.swiper {
+  @apply h-full !-m-[10px] !p-[10px];
+}
+
+.swiper .swiper-slide {
+  @apply h-auto;
+}

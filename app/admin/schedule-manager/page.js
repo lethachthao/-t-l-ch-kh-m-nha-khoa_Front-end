@@ -6,7 +6,7 @@ import { FileAddOutlined } from '@ant-design/icons';
 import ScheduleModal from './_components/modal/schedule';
 import ScheduleList from './_components/schedule-list';
 import { useAddSchedule } from './_hooks/use-add-schedule';
-import { useDoctors } from './_hooks/use-doctors';
+import { useDoctors } from '../../../hooks/use-doctors';
 import { useSchedules } from './_hooks/use-schedules';
 import { useToggle } from '@/hooks/use-toggle';
 import { useState } from 'react';

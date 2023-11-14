@@ -1,6 +1,9 @@
-import { Button, Form, Input, Spin, Upload } from 'antd';
+import { Avatar, Button, Form, Input, Select, Space, Spin, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { useUploadManual } from '../../_hooks/use-upload-manual';
+import { useUploadManual } from '../../../_hooks/use-upload-manual';
+import { useDoctors } from '@/hooks/use-doctors';
+import { useMemo } from 'react';
+import { isArray } from '@/utils/assertions';
 
 const initialValues = {
   _id: '',
@@ -10,7 +13,10 @@ const initialValues = {
 };
 
 const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
-  const { _id, name, description, avatar } = data || initialValues;
+  const { _id, name, description, avatar, members } = data || initialValues;
+
+  // get doctors
+  const { data: doctorsSeed } = useDoctors();
 
   const [form] = Form.useForm();
   const { getUploadProps } = useUploadManual({ maxCount: 1 });
@@ -28,13 +34,17 @@ const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
     const formData = new FormData();
 
     for (let fieldName in values) {
+      if (fieldName === 'members' && values[fieldName].length) {
+        for (let i in values[fieldName]) {
+          formData.append(`${fieldName}[]`, values[fieldName][i]);
+        }
+        continue;
+      }
+
       if (fieldName === 'avatar') {
         const [file] = values[fieldName];
 
-        if (
-          Array.isArray(values[fieldName]) &&
-          file.originFileObj instanceof File
-        ) {
+        if (file && file.originFileObj instanceof File) {
           formData.append(fieldName, file.originFileObj);
           continue;
         } else {
@@ -51,6 +61,16 @@ const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
       onSubmit?.(_id, formData);
     }
   };
+
+  const doctorsSeedNormalize = useMemo(() => {
+    if (!doctorsSeed) return [];
+
+    return doctorsSeed.data.map((doctor) => ({
+      label: doctor.name,
+      value: doctor._id,
+      emoji: doctor.avatar.path,
+    }));
+  }, [doctorsSeed]);
 
   return (
     <Spin spinning={isSubmitting}>
@@ -71,6 +91,7 @@ const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
               },
             ],
           }),
+          members: members || [],
         }}
         onFinish={submitHandler}
       >
@@ -98,6 +119,18 @@ const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
           ]}
         >
           <Input placeholder="Mô tả chuyên khoa" />
+        </Form.Item>
+
+        <Form.Item name="members" label="Thành viên">
+          <Select
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder="Chọn thành viên"
+            // defaultValue={['china']}
+            onChange={console.log}
+            optionLabelProp="label"
+            options={doctorsSeedNormalize}
+          />
         </Form.Item>
 
         <Form.Item

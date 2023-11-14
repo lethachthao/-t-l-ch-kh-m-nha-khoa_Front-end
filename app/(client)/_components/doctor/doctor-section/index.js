@@ -23,7 +23,7 @@ export default function DoctorSection({ doctors, isLoading }) {
         <Swiper slidesPerView={4} spaceBetween={20} className="mySwiper">
           {doctors.map((doctor) => (
             <SwiperSlide key={doctor?._id}>
-              <DoctorCard doctor={doctor} className="rounded-xl" />
+              <DoctorCard doctor={doctor} className="rounded-xl shadow" />
             </SwiperSlide>
           ))}
         </Swiper>
