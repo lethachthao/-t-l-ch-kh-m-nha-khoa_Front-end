@@ -1,4 +1,5 @@
-import { Button, Col, Form, Input, Modal, Row, Spin } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Space, Spin } from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
 // BillTemplate not support lazyloading
 import BillTemplate from './bill-template';
@@ -20,10 +21,10 @@ const BillModal = ({
   isSubmitting,
   onSubmit,
 }) => {
-  const [otherInformation, setOtherInformation] = useState(null);
+  const [otherInformation, setOtherInformation] = useState([]);
 
   const applyHandler = (values) => {
-    setOtherInformation(values);
+    setOtherInformation(values.bill_info);
   };
 
   const renderBillTemplate = (
@@ -56,16 +57,52 @@ const BillModal = ({
         <div className="flex flex-col gap-4">
           <div>
             <Form name="helper_form" layout="vertical" onFinish={applyHandler}>
-              <Form.Item label="Đơn thuốc" name="prescription">
-                <Input.TextArea placeholder="Đơn thuốc" />
-              </Form.Item>
+              <Form.List name="bill_info">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{
+                          display: 'flex',
+                          marginBottom: 8,
+                        }}
+                        align="center"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'prescription']}
+                          label="Đơn thuốc"
+                        >
+                          <Input placeholder="Đơn thuốc" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'instruction']}
+                          label="Chỉ dẫn"
+                        >
+                          <Input placeholder="Chỉ dẫn" />
+                        </Form.Item>
 
-              <Form.Item label="Chỉ dẫn" name="instruction">
-                <Input.TextArea placeholder="Chỉ dẫn bác sĩ" />
-              </Form.Item>
+                        <MinusCircleOutlined onClick={() => remove(name)} />
+                      </Space>
+                    ))}
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        Thêm thông tin
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
 
               <Form.Item>
-                <Button type="primary" block htmlType="submit">
+                <Button htmlType="submit" block type="primary">
                   Áp dụng
                 </Button>
               </Form.Item>

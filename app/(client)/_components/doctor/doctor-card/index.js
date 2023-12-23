@@ -11,7 +11,7 @@ const DoctorCard = ({ className, doctor }) => {
     <Link
       href={`/doctor/${_id}`}
       className={cn(
-        'relative h-full p-4 !bg-white flex flex-col justify-center items-center gap-2 transition-colors !text-slate-700 hover:!text-slate-500 overflow-hidden',
+        'relative h-full p-4 !bg-white flex flex-col justify-start items-center gap-2 transition-colors !text-slate-700 hover:!text-slate-500 overflow-hidden',
         className,
       )}
     >

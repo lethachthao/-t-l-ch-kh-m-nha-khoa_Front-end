@@ -2,6 +2,7 @@ import { axiosInstance } from '@/lib/http/axios-instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { App } from 'antd';
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 export const useLogin = () => {
   const router = useRouter();
@@ -15,13 +16,15 @@ export const useLogin = () => {
     onSuccess: async (response) => {
       localStorage.setItem('accessToken', response?.accessToken?.token);
 
-      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      await queryClient.resetQueries();
 
       message.success('Đăng nhập thành công!');
-      router.push('/');
+
+      const tokenDecoded = jwtDecode(response?.accessToken?.token);
+      router.push(tokenDecoded?.role === 'user' ? '/' : '/admin');
     },
     onError: () => {
-      message.error('Đăng nhập không thành công!');
+      message.error('email hoặc password không chính xác!');
     },
   });
 };

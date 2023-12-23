@@ -73,13 +73,13 @@ const UserForm = ({ isSubmitting = false, defaultData, onSubmit }) => {
   // em hông nói sớm giờ phải refactor lại tùm lum thứ, hôm đó em có bảo nhưng anh bảo mình cứ tính sau mà anh
   return (
     <div className="flex flex-col gap-4 bg-white p-8 rounded-xl">
-      <Alert
+      {/* <Alert
         message="Warning"
         description="Tạo tài khoản chỉ dành cho mục đích test, không sử dụng trong thực
             tế để đảm bảo an toàn thông tin người dùng."
         type="warning"
         showIcon
-      />
+      /> */}
 
       <div className="flex flex-col items-center text-center gap-2">
         <Avatar size={100} icon={<UserOutlined />} />

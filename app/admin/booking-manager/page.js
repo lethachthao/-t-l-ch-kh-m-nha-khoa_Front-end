@@ -19,11 +19,19 @@ const BookingManager = () => {
   }
 
   const columns = [
+    // {
+    //   title: 'ID',
+    //   dataIndex: '_id',
+    //   key: '_id',
+    // },
+
     {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id',
+      title: 'Số thứ tự',
+      dataIndex: 'index', // Đặt dataIndex là 'index' để hiển thị số thứ tự
+      key: 'index',
+      render: (_, record, index) => index + 1, // Hiển thị số thứ tự
     },
+
     {
       title: 'Thời gian',
       dataIndex: 'time',
@@ -43,6 +51,13 @@ const BookingManager = () => {
       title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
+    },
+
+    {
+      title: 'Số điện thoại',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+      render: (text, record) => <span>{record.phoneNumber}</span>,
     },
 
     {
@@ -72,6 +87,10 @@ const BookingManager = () => {
   const bookingData = useMemo(() => {
     if (!bookings) return null;
 
+    // const sortedBookings = [...bookings.data].sort((a, b) =>
+    //   dayjs(a.date).isBefore(b.date) ? -1 : 1,
+    // );
+    // return sortedBookings.find((booking) => booking._id === bookingId);
     return bookings.data.find((booking) => booking._id === bookingId);
   }, [bookings, bookingId]);
 

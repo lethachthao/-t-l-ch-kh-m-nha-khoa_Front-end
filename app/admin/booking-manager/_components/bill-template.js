@@ -40,6 +40,20 @@ const styles = StyleSheet.create({
     height: '1px',
     backgroundColor: '#DDDDDD',
   },
+
+  otherInformationWrapper: {
+    padding: '10px',
+    backgroundColor: '#efefef',
+  },
+  otherInformation: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottom: '1px solid #ffffff',
+  },
+  otherInformationChild: {
+    flex: 1,
+    borderLeft: '1px solid #ffffff',
+  },
 });
 
 Font.register({
@@ -62,7 +76,7 @@ function BillTemplate({ bookingData, otherInformation }) {
     doctorId,
   } = bookingData;
 
-  const { prescription, instruction } = otherInformation || {};
+  // const { prescription, instruction } = otherInformation || {};
 
   return (
     <Document>
@@ -121,13 +135,19 @@ function BillTemplate({ bookingData, otherInformation }) {
         <View style={styles.divider}></View>
 
         <View>
-          <Text style={styles.text}>Đơn thuốc: {prescription || 'Trống'}</Text>
-        </View>
-
-        <View>
-          <Text style={styles.text}>
-            Chỉ dẫn của bác sĩ: {instruction || 'Trống'}
-          </Text>
+          <Text style={styles.text}>Đơn thuốc & chỉ dẫn:</Text>
+          <View style={styles.otherInformationWrapper}>
+            {otherInformation.map(({ prescription, instruction }, index) => (
+              <View key={index} style={styles.otherInformation}>
+                <View style={styles.otherInformationChild}>
+                  <Text style={styles.text}>Đơn thuốc: {prescription}</Text>
+                </View>
+                <View style={styles.otherInformationChild}>
+                  <Text style={styles.text}>Chỉ dẫn: {instruction}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
 
         <View>

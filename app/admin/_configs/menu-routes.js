@@ -36,12 +36,14 @@ export const menuRoutes = [
     ],
     roleAccess: ['admin'],
   },
+
   {
     key: 'booking-manager',
     icon: <FaHospitalUser />,
     label: <Link href="/admin/booking-manager">Quản lí đơn khám</Link>,
     roleAccess: ['doctor'],
   },
+
   {
     key: 'medical-specialty-manager',
     icon: <UserOutlined />,
@@ -50,12 +52,14 @@ export const menuRoutes = [
     ),
     roleAccess: ['admin'],
   },
+
   {
     key: 'scheduling-manager',
     icon: <TeamOutlined />,
     label: <Link href="/admin/schedule-manager">Quản lí lịch trình</Link>,
     roleAccess: ['admin'],
   },
+
   {
     key: 'medical-examination-history',
     icon: <FileOutlined />,

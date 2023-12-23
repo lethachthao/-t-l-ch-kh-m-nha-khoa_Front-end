@@ -7,16 +7,24 @@ import {
   Form,
   Input,
   Radio,
+  Space,
   Spin,
 } from 'antd';
 import moment from 'moment';
 import { useAuth } from '@/hooks/use-auth';
 import dayjs from 'dayjs';
 
-export default function BookingForm({ isSubmitting, booking, onSubmit }) {
+export default function BookingForm({
+  isSubmitting,
+  booking,
+  specialistPicker,
+  onSubmit,
+}) {
   const { date, startTime, endTime, doctor } = booking;
 
   const { data: profile } = useAuth();
+
+  console.log(specialistPicker);
 
   const dateNode = `${moment(date).format(
     'dddd, DD/MM/YYYY',
@@ -36,7 +44,7 @@ export default function BookingForm({ isSubmitting, booking, onSubmit }) {
           size={64}
         />
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <div className="font-semibold text-lg text-cyan-700">
             Bác sĩ {doctor.name}
           </div>
@@ -46,6 +54,15 @@ export default function BookingForm({ isSubmitting, booking, onSubmit }) {
               <BsCalendar3 />
             </span>
             <span>{dateNode}</span>
+          </div>
+
+          <div className=" text-sm">
+            <span>Chuyên khoa khám: </span>
+            <Space size="middle">
+              <div className="font-semibold">
+                {specialistPicker.map((s) => s.name)}
+              </div>
+            </Space>
           </div>
         </div>
       </div>

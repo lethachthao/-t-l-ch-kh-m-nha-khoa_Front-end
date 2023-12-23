@@ -7,6 +7,7 @@ export default function BookingModal({
   onCancel,
   onSubmit,
   booking,
+  specialistPicker,
 }) {
   return (
     <Modal
@@ -20,6 +21,7 @@ export default function BookingModal({
       <BookingForm
         isSubmitting={isSubmitting}
         booking={booking}
+        specialistPicker={specialistPicker}
         onSubmit={onSubmit}
       />
     </Modal>

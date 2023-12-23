@@ -29,6 +29,7 @@ const RootProvider = ({ children }) => {
             refetchOnWindowFocus: false, // không fetch lại data khi nhấn chuột vào bất cứ đâu trong trình duyệt
             refetchOnReconnect: false, // không fetch lại data khi mất kết nối và sau đó có kết nối lại internet
             retryOnMount: true, // ko retry fetch lại data nếu query đó có error xảy ra
+            retry: 0,
           },
         },
       }),

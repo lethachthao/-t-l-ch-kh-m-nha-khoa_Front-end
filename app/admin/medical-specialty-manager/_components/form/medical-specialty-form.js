@@ -4,6 +4,7 @@ import { useUploadManual } from '../../../_hooks/use-upload-manual';
 import { useDoctors } from '@/hooks/use-doctors';
 import { useMemo } from 'react';
 import { isArray } from '@/utils/assertions';
+const { TextArea } = Input;
 
 const initialValues = {
   _id: '',
@@ -118,7 +119,15 @@ const MedicalSpecialtyForm = ({ isSubmitting = false, data, onSubmit }) => {
             },
           ]}
         >
-          <Input placeholder="Mô tả chuyên khoa" />
+          {/* <Input
+            placeholder="Mô tả chuyên khoa"
+            
+          /> */}
+
+          <Input.TextArea
+            placeholder="Đơn thuốc"
+            autoSize={{ minRows: 3, maxRows: 6 }}
+          />
         </Form.Item>
 
         <Form.Item name="members" label="Thành viên">

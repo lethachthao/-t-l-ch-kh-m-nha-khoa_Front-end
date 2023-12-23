@@ -4,6 +4,8 @@ import {
   App,
   Avatar,
   Button,
+  Checkbox,
+  Radio,
   Select,
   Skeleton,
   Space,
@@ -41,6 +43,7 @@ const DoctorDetail = () => {
 
   const [date, setDate] = useState('');
   const [bookingData, setBookingData] = useState(null);
+  const [specialistPicker, setSpecialistPicker] = useState([]);
   const { message } = App.useApp();
 
   const { data: schedule, isLoading: isScheduleLoading } = useDoctorSchedule(
@@ -75,6 +78,10 @@ const DoctorDetail = () => {
         return message.error('Vui lòng đăng nhập để tiếp tục!');
       }
 
+      if (!specialistPicker.length) {
+        return message.error('Vui lòng chọn khoa khám!');
+      }
+
       setBookingData({
         date,
         startTime,
@@ -90,6 +97,14 @@ const DoctorDetail = () => {
         setBookingData(null);
       },
     });
+  };
+
+  const specialistPickerHandler = (values) => {
+    setSpecialistPicker(
+      !!values.length
+        ? values.map((v) => doctor.data.specialist.find((s) => s._id === v))
+        : [],
+    );
   };
 
   if (isDoctorDetailLoading) {
@@ -198,26 +213,45 @@ const DoctorDetail = () => {
               {isScheduleLoading ? (
                 <Skeleton />
               ) : (
-                <Space size={10} wrap>
-                  {schedule?.data ? (
-                    schedule.data.time.map((time) => (
-                      <Button
-                        key={time._id}
-                        type="primary"
-                        ghost
-                        onClick={bookingHandler(
-                          schedule.data.date,
-                          time.start,
-                          time.end,
-                        )}
-                      >
-                        {time.start} - {time.end}
-                      </Button>
-                    ))
+                <div>
+                  {!!schedule?.data?.time?.length ? (
+                    <div>
+                      <Space size={10} wrap>
+                        {schedule.data.time.map((time) => (
+                          <Button
+                            key={time._id}
+                            type="primary"
+                            ghost
+                            disabled={time.isDisabled}
+                            onClick={bookingHandler(
+                              schedule.data.date,
+                              time.start,
+                              time.end,
+                            )}
+                          >
+                            {time.start} - {time.end}
+                          </Button>
+                        ))}
+                      </Space>
+
+                      <div className="mt-5">
+                        <span>Chọn khoa khám: </span>
+
+                        <div className="mt-1">
+                          <Checkbox.Group
+                            options={doctor.data.specialist.map((s) => ({
+                              label: s.name,
+                              value: s._id,
+                            }))}
+                            onChange={specialistPickerHandler}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <span>Chưa có lịch vào ngày này</span>
                   )}
-                </Space>
+                </div>
               )}
 
               <div className="flex items-center gap-1 text-amber-500">
@@ -237,6 +271,7 @@ const DoctorDetail = () => {
         isOpen={Boolean(bookingData)}
         isSubmitting={isBookingSubmitting}
         booking={bookingData}
+        specialistPicker={specialistPicker}
         onSubmit={bookingSubmitHandler}
         onCancel={() => setBookingData(null)}
       />

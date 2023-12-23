@@ -10,10 +10,6 @@ const withAuth = (options = {}) => {
 
     const { role, mode } = options;
 
-    console.log('with auth active');
-
-    console.log('error: ', error);
-
     if (isLoading) {
       return <Skeleton />;
     }

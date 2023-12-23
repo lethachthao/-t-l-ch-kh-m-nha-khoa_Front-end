@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Avatar, Button, Dropdown, Input } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Input } from 'antd';
 import { BsSearch } from 'react-icons/bs';
+import { IoBagCheckOutline } from 'react-icons/io5';
 
 import Logo from '@/assets/images/tooth-logo.jpg';
 import { navRoute } from '../../_configs/nav-route';
@@ -11,9 +12,12 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useLogout } from '@/hooks/use-logout';
+import { useMyBookings } from '../../_hooks/use-my-booking';
+import BookingDropdown from '../booking/booking-dropdown';
 
 const Header = () => {
-  const { data: profile, isError } = useAuth();
+  const { data: profile, isLoading: isLoadingAuth, isError } = useAuth();
+  const { data: bookings, isLoading: isBookingLoading } = useMyBookings();
   const { logout } = useLogout();
 
   const pathname = usePathname();
@@ -91,18 +95,43 @@ const Header = () => {
           </ul>
 
           <div className="">
-            {!profile?.data || isError ? (
+            {isLoadingAuth ? (
+              <span>Loading...</span>
+            ) : !profile?.data || isError ? (
               <Button href="/login" type="primary">
                 Đăng nhập
               </Button>
             ) : (
-              <div className="flex items-center gap-2 font-semibold">
-                <Dropdown menu={{ items }} trigger={['click']}>
-                  <Avatar src={profile.data?.avatar?.path} size="default">
-                    {profile.data.name.slice(0, 1)}
-                  </Avatar>
+              <div className="flex items-center gap-6">
+                <Dropdown
+                  trigger={['click']}
+                  dropdownRender={() => (
+                    <BookingDropdown
+                      loading={isBookingLoading}
+                      bookings={bookings?.data}
+                    />
+                  )}
+                  placement="bottomRight"
+                >
+                  <Badge count={bookings?.data?.length || 0} size="small">
+                    <button className="flex items-center justify-center w-[32px] h-[32px] rounded-full text-xl transition-colors duration-75 bg-gradient-to-br from-slate-200 to-slate-300">
+                      <IoBagCheckOutline />
+                    </button>
+                  </Badge>
                 </Dropdown>
-                <span>{profile.data.name}</span>
+
+                <Dropdown
+                  menu={{ items }}
+                  trigger={['click']}
+                  placement="bottomRight"
+                >
+                  <div className="flex items-center gap-2 font-semibold cursor-pointer">
+                    <Avatar src={profile.data?.avatar?.path} size="default">
+                      {profile.data.name.slice(0, 1)}
+                    </Avatar>
+                    <span>{profile.data.name}</span>
+                  </div>
+                </Dropdown>
               </div>
             )}
           </div>
