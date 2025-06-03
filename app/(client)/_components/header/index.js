@@ -60,11 +60,11 @@ const Header = () => {
         <div className="flex items-center w-full h-[60px]">
           <Link
             href="/"
-            className="overflow-hidden max-w-[150px] h-full flex items-center justify-center gap-2"
+            className="overflow-hidden max-w-[170px] h-full flex items-center justify-center gap-2"
           >
             <Image src={Logo} alt="iTooth" width={55} height={55} />
             <span className="inline-block font-extrabold text-transparent text-lg leading-tight bg-clip-text bg-gradient-to-br from-cyan-400 to-cyan-800">
-              <small>Nha khoa</small> iTooth
+              <small>Phòng khám</small> iTooth
             </span>
           </Link>
 
